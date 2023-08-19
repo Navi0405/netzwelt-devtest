@@ -1,72 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-ul, #myUL {
- list-style-type: none;
-}
-#myUL {
- margin: 0;
- padding: 0;
-}
-.caret {
- cursor: pointer;
- -webkit-user-select: none; /* Safari 3.1+ */
- -moz-user-select: none; /* Firefox 2+ */
- -ms-user-select: none; /* IE 10+ */
- user-select: none;
-}
-.caret::before {
- content: "\25B6";
- color: black;
- display: inline-block;
- margin-right: 6px;
-}
-.caret-down::before {
- -ms-transform: rotate(90deg); /* IE 9 */
- -webkit-transform: rotate(90deg); /* Safari */'
- transform: rotate(90deg); 
-}
-.nested {
- display: none;
-}
-.active {
- display: block;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
 </head>
 <body>
-<h2>Territories</h2>
-<p>Here are the list of territories</p>
-    <h3>Regions, Cities, and Barangays</h3>
-    <ul>
-    {% for region in data.regions %}
-        <li>{{ region.name }}
-            <ul>
-            {% for city in region.cities %}
-                <li>{{ city.name }}
-                    <ul>
-                    {% for barangay in city.barangays %}
-                        <li>{{ barangay.name }}</li>
-                    {% endfor %}
-                    </ul>
-                </li>
-            {% endfor %}
-            </ul>
-        </li>
-    {% endfor %}
-    </ul>
-<script>
-var toggler = document.getElementsByClassName("caret");
-var i;
-for (i = 0; i < toggler.length; i++) {
- toggler[i].addEventListener("click", function() {
- this.parentElement.querySelector(".nested").classList.toggle("active");
- this.classList.toggle("caret-down");
- });
-}
-</script>
+    <h1>Welcome to the Home Page</h1>
+    <select id="locationDropdown"></select>
+    <select id="subLocationDropdown" style="display: none;"></select>
+    
+    <script src="script.js"></script>
 </body>
 </html>
-Selection Criteri
