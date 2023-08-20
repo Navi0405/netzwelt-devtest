@@ -1,15 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    #dropdown-menu {
+        text-decoration: none;
+        color: black;
+    }
+
+    #dropdown-menu ul {
+        display: none;
+        list-style-type: none;
+        padding-left: 20px;
+        text-decoration: none;
+        color: black;
+    }
+    
+    #dropdown-menu li {
+        margin-top: 5px;
+        text-decoration: none;
+        color: black;
+    }
+    
+    #dropdown-menu a {
+        text-decoration: none;
+        font-style:normal;
+        color: black;
+    }
+    
+    h1 {
+        font-style: unset;
+    }
+
+    #container {
+        margin-top: 75px;
+        margin-left: 30px;
+        border-width: 2cm;
+    }
+
+</style>
 </head>
 <body>
+    <div id="container" class="container">
     <h1>Territories</h1>
-    <select id="locationDropdown"></select>
-    <select id="subLocationDropdown" style="display: none;"></select>
-    
-    <script src="script.js"></script>
+    <ul class="dropdown-menu" id="dropdown-menu"></ul>
+    </div>
+<script>
+    fetch('data.json')
+    .then(response => response.json())
+    .then(data => {
+        const menu = document.getElementById('dropdown-menu');
+
+        // Function to find children for a given parent
+        function findChildren(parentId) {
+            return data.filter(item => item.parent === parentId);
+        }
+
+        // Loop through top-level parents
+        data.filter(item => item.parent === null).forEach(parentItem => {
+            const li = document.createElement('li');
+            
+            const aParent = document.createElement('a');
+            aParent.href = "#";
+            aParent.textContent = parentItem.name;
+            aParent.innerHTML += ' <span class="arrow" style="">&#9654;</span>';
+            li.appendChild(aParent);
+            
+            const children = findChildren(parentItem.id);
+            if (children.length) {
+                const subUl = document.createElement('ul');
+
+                children.forEach(childItem => {
+                    const subLi = document.createElement('li');
+                    const aChild = document.createElement('a');
+                    aChild.href = "#";
+                    aChild.textContent = childItem.name;
+
+                    subLi.appendChild(aChild);
+                    subUl.appendChild(subLi);
+                });
+
+                li.appendChild(subUl);
+            }
+
+            menu.appendChild(li);
+        });
+
+        // Add click event for toggling the arrow and submenu
+        const menuItems = document.querySelectorAll('#dropdown-menu > li > a');
+        menuItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const arrow = this.querySelector('.arrow');
+
+                // Toggle submenu display
+                const subMenu = this.nextElementSibling;
+                if (subMenu && subMenu.style.display === "block") {
+                    subMenu.style.display = "none";
+                    arrow.innerHTML = "&#9654;";  // Right arrow
+                } else if (subMenu) {
+                    subMenu.style.display = "block";
+                    arrow.innerHTML = "&#9660;";  // Down arrow
+                }
+            });
+        });
+    });
+
+
+</script>
 </body>
 </html>
